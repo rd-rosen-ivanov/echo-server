@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -152,18 +151,25 @@ func serveWebSocket(wr http.ResponseWriter, req *http.Request, sendServerHostnam
 }
 
 func serveHTTP(wr http.ResponseWriter, req *http.Request, sendServerHostname bool) {
+	// log request headers
+	for key, values := range req.Header {
+		for _, value := range values {
+			fmt.Println("[%s] %s: %s\n", time.Now(), key, value)
+		}
+	}
+
 	//wr.Header().Add("Content-Type", "text/plain")
 	wr.Header().Add("Content-Type", "application/json")
 	//wr.WriteHeader(200)
-	randomFail := rand.Int()%2 != 0
+	// randomFail := rand.Int()%2 != 0
 
-	if randomFail {
-		wr.WriteHeader(403)
-		fmt.Println("return 403")
-	} else {
-		fmt.Println("return 200")
-		wr.WriteHeader(200)
-	}
+	// if randomFail {
+	wr.WriteHeader(403)
+	fmt.Println("return 403")
+	// } else {
+	// 	fmt.Println("return 200")
+	// 	wr.WriteHeader(200)
+	// }
 
 	// if sendServerHostname {
 	// 	host, err := os.Hostname()
